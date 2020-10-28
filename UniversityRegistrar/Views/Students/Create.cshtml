@@ -1,0 +1,11 @@
+@model UniversityRegistrar.Models.Student;
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Name);
+  @Html.EditorFor(model => model.Name);
+
+  @Html.Label("Date Of Enrollment");
+  @Html.EditorFor(model => model.DateOfEnrollment);
+  <input type="submit" value="Enter new student">
+}
