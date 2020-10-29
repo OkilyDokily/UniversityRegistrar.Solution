@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Calendar\Calendar.csproj" />  
+    <ProjectReference Include="..\UniversityRegistrar\UniversityRegistrar.csproj" />  
   </ItemGroup>
 
 </Project>

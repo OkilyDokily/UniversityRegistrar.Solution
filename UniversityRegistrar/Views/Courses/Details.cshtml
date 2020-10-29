@@ -1,0 +1,6 @@
+@using UniversityRegistrar.Models;
+
+@foreach (StudentCourse join in @Model.Students)
+{
+  <p>@Html.ActionLink(join.Student.Name,"Details","Students", new {id = join.Student.StudentId})</p>
+}

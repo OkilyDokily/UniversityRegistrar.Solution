@@ -1,5 +1,5 @@
 
-# _Mad Libs_
+# _University Registrar_
 
 #### _This demonstrates beginner level C# with ASP.Net Core._
 
@@ -15,8 +15,8 @@ _A classic ping-pong coding exercize_
 * Install dotnet core from https://dotnet.microsoft.com/download
 * Clone/download the repo
 * Navigate to the MadLibs folder
-* type 'dotnet restore'
-* Run "dotnet run" to open the program
+* type `dotnet restore`
+* Run `dotnet run` to open the program
 * Follow the instructions within the app
 ## Specs
 

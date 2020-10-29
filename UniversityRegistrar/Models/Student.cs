@@ -10,9 +10,11 @@ namespace UniversityRegistrar.Models
         public DateTime DateOfEnrollment {get;set;}
 
         public virtual ICollection<StudentCourse> Courses {get;set;}
+        public virtual ICollection<StudentDepartment> StudentDepartments {get;set;}
         public Student()
         {
             this.Courses = new HashSet<StudentCourse>();
+            this.StudentDepartments = new HashSet<StudentDepartment>();
             this.DateOfEnrollment = DateTime.Now;
         }
     }

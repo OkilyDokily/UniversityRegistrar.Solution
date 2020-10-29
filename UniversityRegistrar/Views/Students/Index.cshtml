@@ -1,0 +1,8 @@
+@using UniversityRegistrar.Models;
+
+@model List<UniversityRegistrar.Models.Student>;
+
+@foreach (Student student in @Model)
+{
+  <p>@Html.ActionLink(@student.Name,"Details",new {id = @student.StudentId})</p>
+}
