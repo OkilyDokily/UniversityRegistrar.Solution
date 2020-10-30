@@ -8,7 +8,6 @@ namespace UniversityRegistrar.Models
     public virtual DbSet<Student> Students { get; set; }
     public virtual DbSet<Department> Departments { get; set; }
     public virtual DbSet<StudentCourse> StudentCourses { get; set; }
-    public virtual DbSet<CourseDepartment> CourseDepartments { get; set; }
     public virtual DbSet<StudentDepartment> StudentDepartments { get; set; }
     public UniversityRegistrarContext(DbContextOptions options) : base(options) { }
   }

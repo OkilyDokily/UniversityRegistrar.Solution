@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using UniversityRegistrar.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 namespace UniversityRegistrar.Controllers
 {
@@ -26,15 +28,17 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Create()
     {
+      ViewBag.DepartmentId = new SelectList(_db.Departments.ToList(), "DepartmentId", "Name");
       return View();
     }
 
     [HttpPost]
     public ActionResult Create(Course course)
     {
+      //course.DepartmentId
       _db.Courses.Add(course);
       _db.SaveChanges();
-      return View();
+      return RedirectToAction("Create");
     }
   }
 }

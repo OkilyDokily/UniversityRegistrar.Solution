@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityRegistrar.Models;
 
 namespace UniversityRegistrar.Migrations
 {
     [DbContext(typeof(UniversityRegistrarContext))]
-    partial class UniversityRegistrarContextModelSnapshot : ModelSnapshot
+    [Migration("20201030221119_dept")]
+    partial class dept
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,13 +28,27 @@ namespace UniversityRegistrar.Migrations
 
                     b.Property<string>("CourseNumber");
 
+                    b.HasKey("CourseId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("UniversityRegistrar.Models.CourseDepartment", b =>
+                {
+                    b.Property<int>("CourseDepartmentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CourseId");
+
                     b.Property<int>("DepartmentId");
 
-                    b.HasKey("CourseId");
+                    b.HasKey("CourseDepartmentId");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("CourseDepartments");
                 });
 
             modelBuilder.Entity("UniversityRegistrar.Models.Department", b =>
@@ -97,8 +113,13 @@ namespace UniversityRegistrar.Migrations
                     b.ToTable("StudentDepartments");
                 });
 
-            modelBuilder.Entity("UniversityRegistrar.Models.Course", b =>
+            modelBuilder.Entity("UniversityRegistrar.Models.CourseDepartment", b =>
                 {
+                    b.HasOne("UniversityRegistrar.Models.Course", "Course")
+                        .WithMany("Departments")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("UniversityRegistrar.Models.Department", "Department")
                         .WithMany("Courses")
                         .HasForeignKey("DepartmentId")

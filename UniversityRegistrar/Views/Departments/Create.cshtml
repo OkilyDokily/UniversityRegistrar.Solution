@@ -1,0 +1,9 @@
+@model UniversityRegistrar.Models.Department;
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Name);
+  @Html.EditorFor(model => model.Name);
+
+  <input type="submit" value="Enter new department">
+}
