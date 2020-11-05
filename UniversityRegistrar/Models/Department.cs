@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace UniversityRegistrar.Models
 {
@@ -9,11 +7,11 @@ namespace UniversityRegistrar.Models
     public int DepartmentId { get; set; }
     public string Name { get; set; }
 
-    public virtual ICollection<StudentDepartment> Students { get; set; }
+    public virtual ICollection<Student> Students { get; set; }
     public virtual ICollection<Course> Courses { get; set; }
     public Department()
     {
-      this.Students = new HashSet<StudentDepartment>();
+      this.Students = new HashSet<Student>();
       this.Courses = new HashSet<Course>();
     }
   }

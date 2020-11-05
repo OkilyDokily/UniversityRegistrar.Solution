@@ -1,0 +1,6 @@
+@using UniversityRegistrar.Models
+
+@foreach (Department department in @Model)
+{
+  <h3>@Html.ActionLink(department.Name, "Details", new {id = department.DepartmentId})</h3>
+}

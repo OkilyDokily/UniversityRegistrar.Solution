@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityRegistrar.Models;
 
 namespace UniversityRegistrar.Migrations
 {
     [DbContext(typeof(UniversityRegistrarContext))]
-    partial class UniversityRegistrarContextModelSnapshot : ModelSnapshot
+    [Migration("20201102222148_new")]
+    partial class @new
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,13 +47,6 @@ namespace UniversityRegistrar.Migrations
                     b.HasKey("DepartmentId");
 
                     b.ToTable("Departments");
-
-                    b.HasData(
-                        new
-                        {
-                            DepartmentId = 1,
-                            Name = "Undeclared"
-                        });
                 });
 
             modelBuilder.Entity("UniversityRegistrar.Models.Student", b =>
@@ -90,6 +85,24 @@ namespace UniversityRegistrar.Migrations
                     b.ToTable("StudentCourses");
                 });
 
+            modelBuilder.Entity("UniversityRegistrar.Models.StudentDepartment", b =>
+                {
+                    b.Property<int>("StudentDepartmentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DepartmentId");
+
+                    b.Property<int>("StudentId");
+
+                    b.HasKey("StudentDepartmentId");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentDepartments");
+                });
+
             modelBuilder.Entity("UniversityRegistrar.Models.Course", b =>
                 {
                     b.HasOne("UniversityRegistrar.Models.Department", "Department")
@@ -101,7 +114,7 @@ namespace UniversityRegistrar.Migrations
             modelBuilder.Entity("UniversityRegistrar.Models.Student", b =>
                 {
                     b.HasOne("UniversityRegistrar.Models.Department", "Department")
-                        .WithMany("Students")
+                        .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -115,6 +128,19 @@ namespace UniversityRegistrar.Migrations
 
                     b.HasOne("UniversityRegistrar.Models.Student", "Student")
                         .WithMany("Courses")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("UniversityRegistrar.Models.StudentDepartment", b =>
+                {
+                    b.HasOne("UniversityRegistrar.Models.Department", "Department")
+                        .WithMany("Students")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("UniversityRegistrar.Models.Student", "Student")
+                        .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

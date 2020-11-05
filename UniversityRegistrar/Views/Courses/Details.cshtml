@@ -4,3 +4,8 @@
 {
   <p>@Html.ActionLink(join.Student.Name,"Details","Students", new {id = join.Student.StudentId})</p>
 }
+
+@foreach (StudentCourse course in @ViewBag.StudentCourses)
+{
+  <p>@Html.ActionLink()</p>
+}

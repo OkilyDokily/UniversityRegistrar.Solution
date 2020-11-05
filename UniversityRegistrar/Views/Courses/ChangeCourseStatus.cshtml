@@ -1,0 +1,11 @@
+@model List<SelectListItem>
+
+@using(Html.BeginForm())
+{
+  @Html.DropDownList("studentcourseid",@Model)
+  @Html.Label("Grade");
+  @Html.TextBox("grade");
+
+  @Html.Label("Finished")
+  @Html.TextBox("finished")
+}

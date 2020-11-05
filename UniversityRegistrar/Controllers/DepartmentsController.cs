@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using UniversityRegistrar.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UniversityRegistrar.Controllers
 {
@@ -25,19 +27,15 @@ namespace UniversityRegistrar.Controllers
       return View();
     }
 
-    public ActionResult DeclareMajor()
+    public ActionResult Details(int id)
     {
-      return View();
+      Department department = _db.Departments.Include(x => x.Students).Include(x => x.Courses).FirstOrDefault(x => x.DepartmentId == id); 
+      return View(department);
     }
 
-    [HttpPost]
-    public ActionResult DeclareMajor(int studentid, int departmentid)
+    public ActionResult Index()
     {
-      ViewBag.StudentId = new SelectList(_db.Students, "StudentId", "Name");
-      ViewBag.DepartmentId = new SelectList(_db.Departments, "DepartmentId", "Name");
-      _db.StudentDepartments.Add(new StudentDepartment { StudentId = studentid, DepartmentId = departmentid });
-      _db.SaveChanges();
-      return RedirectToAction("DeclareMajor");
+      return View(_db.Departments.ToList());
     }
   }
 }

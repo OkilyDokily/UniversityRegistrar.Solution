@@ -2,12 +2,15 @@ namespace UniversityRegistrar.Models
 {
   public class StudentCourse
   {
-    public int StudentCourseId {get;set;}
-    
-    public int CourseId{get;set;}
-    public int StudentId{get;set;}
+    public int StudentCourseId { get; set; }
 
-    public Course Course {get;set;}
-    public Student Student {get;set;}
+    public int CourseId { get; set; }
+    public int StudentId { get; set; }
+
+    public bool Finished { get; set; }
+    public char Grade { get; set; }
+
+    public Course Course { get; set; }
+    public Student Student { get; set; }
   }
 }
