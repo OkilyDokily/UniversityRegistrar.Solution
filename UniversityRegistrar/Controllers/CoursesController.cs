@@ -40,18 +40,5 @@ namespace UniversityRegistrar.Controllers
       _db.SaveChanges();
       return RedirectToAction("Create");
     }
-
-    public ActionResult ChangeCourseStatus(int id)
-    {
-      // List<StudentCourse> grades = _db.StudentCourses.Where(x => x.CourseId == id).Include(x => x.Course).Include(x => x.Student).ToList();
-      List<SelectListItem> items = _db.StudentCourses.Where(x => x.CourseId == id).Include(x => x.Course).Include(x => x.Student).Select(x => new SelectListItem{Text = x.Student.Name, Value = x.StudentCourseId.ToString()}).ToList();
-      //ViewBag.Items = items;
-      return View(items);
-    }
-    [HttpPost]
-    public ActionResult ChangeCourseStatus(int studentcourseid)
-    {
-      return RedirectToAction("Details","StudentCourses", new {id = studentcourseid});
-    }
   }
 }

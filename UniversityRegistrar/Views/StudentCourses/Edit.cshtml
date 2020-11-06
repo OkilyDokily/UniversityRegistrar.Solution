@@ -1,0 +1,12 @@
+@using UniversityRegistrar.Models
+@model UniversityRegistrar.Models.StudentCourse
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(m => m.Grade)
+  @Html.DropDownList("Grade");
+  @Html.LabelFor(m => m.Finished)
+  @Html.EditorFor(m => m.Finished)
+
+  <input value="Change status" type="submit">
+}

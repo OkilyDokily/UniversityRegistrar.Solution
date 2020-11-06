@@ -10,3 +10,6 @@
   <p>@Model.Grade</p>
   <p>@Model.Finished</p>
 </div>
+
+<p>Edit grades and course status</p>
+<p>@Html.ActionLink("Edit","Edit",new {id = @Model.StudentCourseId})</p>
