@@ -1,4 +1,11 @@
+@{
+  Layout = "_Layout";
+}
+
+
 @using UniversityRegistrar.Models;
+
+<p>Course GPA: @ViewBag.GPA</p>
 
 @foreach (StudentCourse join in @Model.Students)
 {

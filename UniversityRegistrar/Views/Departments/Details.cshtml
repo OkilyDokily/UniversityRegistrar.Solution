@@ -1,5 +1,10 @@
-@using UniversityRegistrar.Models;
+@{
+  Layout = "_Layout";
+}
 
+
+@using UniversityRegistrar.Models;
+<p>Department GPA @ViewBag.GPA</p>
 <h3>Courses</h3>
 @foreach (Course course in @Model.Courses)
 {

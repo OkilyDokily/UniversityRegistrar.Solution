@@ -1,0 +1,10 @@
+@{
+  Layout = "_Layout";
+}
+
+
+@using (Html.BeginForm())
+{
+  @Html.DropDownList("CourseId")
+  <input type="submit" value="Enroll in Course">
+}

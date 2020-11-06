@@ -1,8 +1,17 @@
+@{
+  Layout = "_Layout";
+}
+
+
 @using UniversityRegistrar.Models
 @model UniversityRegistrar.Models.StudentCourse
 
 @using (Html.BeginForm())
 {
+  @Html.HiddenFor(m => m.StudentCourseId);
+  @Html.HiddenFor(m => m.CourseId);
+  @Html.HiddenFor(m => m.StudentId);
+
   @Html.LabelFor(m => m.Grade)
   @Html.DropDownList("Grade");
   @Html.LabelFor(m => m.Finished)

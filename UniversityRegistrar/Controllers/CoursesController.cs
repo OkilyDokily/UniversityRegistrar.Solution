@@ -23,8 +23,16 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Details(int id)
     {
+      Course course = _db.Courses.Include(c => c.Students).FirstOrDefault(c => c.CourseId == id);
+      double d = (double)course.Students.Select(s =>
+     {
+       return _db.StudentCourses.Where(x => x.StudentId == s.StudentId).ToList().Average(m => (double)m.Grade);
+     }).ToList().Average();
+
+      ViewBag.GPA = d;
+
       ViewBag.StudentCourses = _db.StudentCourses.Where(x => x.CourseId == id).Include(x => x.Student).ToList();
-      return View(_db.Courses.Include(c => c.Students).ThenInclude(x => x.Student).FirstOrDefault(x => x.CourseId == id));
+      return View(course);
     }
 
     public ActionResult Create()
