@@ -7,10 +7,13 @@
 
 <p>Course GPA: @ViewBag.GPA</p>
 
+<p>See student details</p>
 @foreach (StudentCourse join in @Model.Students)
 {
   <p>@Html.ActionLink(join.Student.Name,"Details","Students", new {id = join.Student.StudentId})</p>
 }
+
+<p>See grades for each student</p>
 
 @foreach (StudentCourse course in @ViewBag.StudentCourses)
 {

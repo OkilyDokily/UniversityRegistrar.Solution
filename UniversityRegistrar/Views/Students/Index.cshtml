@@ -5,9 +5,12 @@
 
 @using UniversityRegistrar.Models;
 
-@model List<UniversityRegistrar.Models.Student>;
+@model List<UniversityRegistrar.Models.StudentWithGPA>;
 <p>Total Student Body GPA: @ViewBag.GPA</p>
-@foreach (Student student in @Model)
+@foreach (StudentWithGPA student in @Model)
 {
-  <p>@Html.ActionLink(@student.Name,"Details",new {id = @student.StudentId})</p>
+  <p>@Html.ActionLink(@student.Student.Name,"Details",new {id = @student.Student.StudentId}) : Course Grade @student.GPA</p>
 }
+
+<p>@Html.ActionLink("Sort student by GPA","SortByGrade")</p>
+<p>@Html.ActionLink("Enroll a new student","Create")</p>

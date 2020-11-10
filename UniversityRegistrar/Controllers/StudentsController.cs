@@ -19,19 +19,18 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Index()
     {
-      double sl = (double)_db.Students.ToList().Select(s =>
-     {
-       return _db.StudentCourses.Where(x => x.StudentId == s.StudentId).ToList().Average(m => (double)m.Grade);
-     }).ToList().Average();
+      List<Student> students = _db.Students.Where(s => s.Courses.Count > 0).Include(x => x.Courses).ToList();
+      List<StudentWithGPA> studentswithgpa = students.Select(s => new StudentWithGPA { Student = s, GPA = s.Courses.Select(x => x.Grade).Average(x => (double)x) }).ToList();
+      List<StudentWithGPA> studentswithgpaordered = studentswithgpa.OrderBy(x => x.GPA).ToList();
 
-      ViewBag.GPA = sl;
-      return View(_db.Students.ToList());
+      ViewBag.GPA = studentswithgpaordered.Select(x => x.GPA).Average();
+      return View(studentswithgpaordered);
     }
 
     public ActionResult Details(int id)
     {
       List<StudentCourse> scs = _db.StudentCourses.Where(x => x.StudentCourseId == id).ToList();
-      ViewBag.GPA = scs.Average(x => (int)x.Grade);
+      ViewBag.GPA = (scs.Count > 0) ? scs.Average(x => (int)x.Grade).ToString() : "No courses to determine GPA";
       return View(_db.Students.Include(x => x.Courses).ThenInclude(x => x.Course).FirstOrDefault(x => x.StudentId == id));
     }
 
@@ -108,6 +107,23 @@ namespace UniversityRegistrar.Controllers
       student.DepartmentId = departmentid;
       _db.SaveChanges();
       return RedirectToAction("DeclareMajor");
+    }
+
+    public ActionResult SortByGrade()
+    {
+      ViewBag.Grades = new SelectList(Enum.GetValues(typeof(Grade)));
+      return View();
+    }
+
+    [HttpPost]
+    public ActionResult SortByGrade(Grade grades)
+    {
+      Console.WriteLine((double)grades);
+      List<Student> students = _db.Students.Where(s => s.Courses.Count > 0).Include(x => x.Courses).ToList();
+      List<StudentWithGPA> studentswithgpa = students.Select(s => new StudentWithGPA { Student = s, GPA = s.Courses.Select(x => x.Grade).Average(x => (double)x) }).ToList();
+      List<StudentWithGPA> studentswithgpaordered = studentswithgpa.Where(x => x.GPA >= (double)grades && x.GPA < (((double)grades) + 1)).OrderBy(x => x.GPA).ToList();
+      Console.WriteLine(studentswithgpaordered.Count);
+      return View("SortByGradeResults", studentswithgpaordered);
     }
   }
 }
