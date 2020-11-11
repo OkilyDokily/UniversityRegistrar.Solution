@@ -6,7 +6,6 @@ namespace UniversityRegistrar.Models
     D,
     C,
     B,
-    A,
-    U
+    A
   }
 }

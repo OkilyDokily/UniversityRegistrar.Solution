@@ -29,13 +29,13 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Details(int id)
     {
-      
+
       Department department = _db.Departments.Include(x => x.Students).Include(x => x.Courses).FirstOrDefault(x => x.DepartmentId == id);
 
       double davg = (double)department.Students.Select(s =>
      {
-       return _db.StudentCourses.Where(x => x.StudentId == s.StudentId).ToList().Average(m => (double)m.Grade);
-     }).ToList().Average();
+       return _db.StudentCourses.Where(x => x.StudentId == s.StudentId).ToList().DefaultIfEmpty().Average(m => (double)m.Grade);
+     }).ToList().DefaultIfEmpty().Average();
 
       ViewBag.GPA = davg;
       return View(department);

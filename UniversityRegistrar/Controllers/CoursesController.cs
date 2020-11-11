@@ -23,21 +23,11 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Details(int id)
     {
-      Course course = _db.Courses.Include(c => c.Students).ThenInclude(sc => sc.Student).FirstOrDefault(c => c.CourseId == id)
-      List<Student> studentsincourse = course.Students.Select(sc => new StudentWithGPA { Student = sc.Student, }).ToList();
-      List<Student> studentsthatmatchcourse = students.Where()
-      List<StudentWithGPA> studentswithgpa = students.Select(s => new StudentWithGPA { Student = s, GPA = s.Courses.Select(x => x.Grade).Average(x => (double)x) }).ToList();
-      List<StudentWithGPA> studentswithgpaordered = studentswithgpa.Where(x => x.GPA >= (double)grades && x.GPA < (((double)grades) + 1)).OrderBy(x => x.GPA).ToList();
-      //   
-      //   double d = (double)course.Students.Select(s =>
-      //  {
-      //    return _db.StudentCourses.Where(x => x.StudentId == s.StudentId).ToList().Average(m => (double)m.Grade);
-      //  }).ToList().Average();
-
-      //   ViewBag.GPA = d;
-
-      //   ViewBag.StudentCourses = _db.StudentCourses.Where(x => x.CourseId == id).Include(x => x.Student).ToList();
-      //   return View(course);
+      Course course = _db.Courses.Include(c => c.Students).Include(c => c.Department).ThenInclude(sc => sc.Student).FirstOrDefault(c => c.CourseId == id);
+      List<StudentWithGPA> studentsincourse = course.Students.Select(sc => new StudentWithGPA { Student = sc.Student, GPA = (double)sc.Grade }).OrderBy(sic => sic.GPA).ToList();
+      ViewBag.GPA = studentsincourse.Average(s => s.GPA);
+      ViewBag.Department = course.Department;
+      return View(studentsincourse);
     }
 
     public ActionResult Create()

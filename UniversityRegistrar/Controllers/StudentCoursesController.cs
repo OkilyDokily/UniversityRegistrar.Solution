@@ -30,7 +30,6 @@ namespace UniversityRegistrar.Controllers
     [HttpPost]
     public ActionResult Edit(StudentCourse sc)
     {
-
       _db.Entry(sc).State = EntityState.Modified;
       _db.SaveChanges();
       return RedirectToAction("Edit");

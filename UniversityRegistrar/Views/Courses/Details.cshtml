@@ -1,21 +1,18 @@
 @{
   Layout = "_Layout";
 }
-
+@model List<UniversityRegistrar.Models.StudentWithGPA>;
 
 @using UniversityRegistrar.Models;
 
-<p>Course GPA: @ViewBag.GPA</p>
+<p>Average course grade: @ViewBag.GPA</p>
 
-<p>See student details</p>
-@foreach (StudentCourse join in @Model.Students)
+<p>See student details:</p>
+@foreach (StudentWithGPA swg in @Model)
 {
-  <p>@Html.ActionLink(join.Student.Name,"Details","Students", new {id = join.Student.StudentId})</p>
+  <p>@Html.ActionLink(swg.Student.Name,"Details","Students", new {id = swg.Student.StudentId}) : Grade in course: @swg.GPA
+  </p>
 }
 
-<p>See grades for each student</p>
-
-@foreach (StudentCourse course in @ViewBag.StudentCourses)
-{
-  <p>@Html.ActionLink(course.Student.Name,"Details","StudentCourses",new {id = course.StudentCourseId})</p>
-}
+<p>Department for this course: @Html.ActionLink((string) @ViewBag.Department.Name, "Details",new {id =
+                          @ViewBag.Department.DepartmentId})</p>

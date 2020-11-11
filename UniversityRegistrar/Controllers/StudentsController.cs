@@ -46,7 +46,6 @@ namespace UniversityRegistrar.Controllers
       _db.Students.Add(student);
       _db.SaveChanges();
       return View();
-
     }
 
     public ActionResult Enroll()
@@ -118,11 +117,10 @@ namespace UniversityRegistrar.Controllers
     [HttpPost]
     public ActionResult SortByGrade(Grade grades)
     {
-      Console.WriteLine((double)grades);
       List<Student> students = _db.Students.Where(s => s.Courses.Count > 0).Include(x => x.Courses).ToList();
       List<StudentWithGPA> studentswithgpa = students.Select(s => new StudentWithGPA { Student = s, GPA = s.Courses.Select(x => x.Grade).Average(x => (double)x) }).ToList();
       List<StudentWithGPA> studentswithgpaordered = studentswithgpa.Where(x => x.GPA >= (double)grades && x.GPA < (((double)grades) + 1)).OrderBy(x => x.GPA).ToList();
-      Console.WriteLine(studentswithgpaordered.Count);
+
       return View("SortByGradeResults", studentswithgpaordered);
     }
   }
