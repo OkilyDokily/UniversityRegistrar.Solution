@@ -32,7 +32,7 @@ namespace UniversityRegistrar.Controllers
     {
       _db.Entry(sc).State = EntityState.Modified;
       _db.SaveChanges();
-      return RedirectToAction("Edit");
+      return RedirectToAction("Details", "Courses", new { id = sc.CourseId });
     }
   }
 }

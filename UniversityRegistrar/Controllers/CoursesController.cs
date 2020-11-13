@@ -25,9 +25,9 @@ namespace UniversityRegistrar.Controllers
     public ActionResult Details(int id)
     {
       Course course = _db.Courses.Include(c => c.Students).ThenInclude(s => s.Student).Include(c => c.Department).FirstOrDefault(c => c.CourseId == id);
-      List<StudentWithGPA> studentsincourse = course.Students.Select(sc => new StudentWithGPA { Student = sc.Student, GPA = (double)sc.Grade }).OrderBy(sic => sic.GPA).ToList();
+      List<StudentWithGPAAndSC> studentsincourse = course.Students.Select(sc => new StudentWithGPAAndSC { StudentCourse = sc, StudentWithGPA = new StudentWithGPA { Student = sc.Student, GPA = (double)sc.Grade } }).OrderBy(sic => sic.StudentWithGPA.GPA).ToList();
 
-      ViewBag.GPA = studentsincourse.Average(s => s.GPA);
+      ViewBag.GPA = studentsincourse.Average(s => s.StudentWithGPA.GPA);
       ViewBag.Department = course.Department;
       return View(studentsincourse);
     }

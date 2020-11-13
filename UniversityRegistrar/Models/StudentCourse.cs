@@ -8,7 +8,7 @@ namespace UniversityRegistrar.Models
     public int StudentId { get; set; }
 
     public bool Finished { get; set; }
-    public Grade Grade { get; set; }
+    public Grade Grade { get; set; } = Grade.A;
 
     public Course Course { get; set; }
     public Student Student { get; set; }
