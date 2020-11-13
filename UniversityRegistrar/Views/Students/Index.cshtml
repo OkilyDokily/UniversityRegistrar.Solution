@@ -9,7 +9,15 @@
 <p>Total Student Body GPA: @ViewBag.GPA</p>
 @foreach (StudentWithGPA student in @Model)
 {
-  <p>@Html.ActionLink(@student.Student.Name,"Details",new {id = @student.Student.StudentId}) : Course Grade @student.GPA</p>
+  @if(student.GPA != null)
+  {
+     <p>@Html.ActionLink(@student.Student.Name,"Details",new {id = @student.Student.StudentId}) :  GPA: @student.GPA</p>
+  }
+  else
+  {
+     <p>@Html.ActionLink(@student.Student.Name,"Details",new {id = @student.Student.StudentId}) :  GPA: The student does not have any courses yet</p>
+  }
+ 
 }
 
 <p>@Html.ActionLink("Sort student by GPA","SortByGrade")</p>

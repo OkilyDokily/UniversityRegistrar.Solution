@@ -19,8 +19,27 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Index()
     {
-      List<Student> students = _db.Students.Where(s => s.Courses.Count > 0).Include(x => x.Courses).ToList();
-      List<StudentWithGPA> studentswithgpa = students.Select(s => new StudentWithGPA { Student = s, GPA = s.Courses.Select(x => x.Grade).Average(x => (double)x) }).ToList();
+      List<Student> students = _db.Students.Include(x => x.Courses).ToList();
+      List<StudentWithGPA> studentswithgpa = students.Select(s =>
+      {
+        double? GPA;
+        if (s.Courses.Count > 0)
+        {
+          GPA = s.Courses.Select(x => (double)x.Grade).ToList().Average();
+        }
+        else
+        {
+          GPA = null;
+        }
+        return new StudentWithGPA
+        {
+          Student = s,
+          GPA = GPA
+        };
+      }
+      ).ToList();
+
+
       List<StudentWithGPA> studentswithgpaordered = studentswithgpa.OrderBy(x => x.GPA).ToList();
 
       ViewBag.GPA = studentswithgpaordered.Select(x => x.GPA).Average();
@@ -29,9 +48,10 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Details(int id)
     {
-      List<StudentCourse> scs = _db.StudentCourses.Where(x => x.StudentCourseId == id).ToList();
-      ViewBag.GPA = (scs.Count > 0) ? scs.Average(x => (int)x.Grade).ToString() : "No courses to determine GPA";
-      return View(_db.Students.Include(x => x.Courses).ThenInclude(x => x.Course).FirstOrDefault(x => x.StudentId == id));
+      List<StudentCourse> scs = _db.StudentCourses.Where(x => x.StudentId == id).ToList();
+      Console.WriteLine(scs.Count);
+      ViewBag.GPA = (scs.Count > 0) ? scs.Average(x => (double)x.Grade).ToString() : "No courses to determine GPA";
+      return View(_db.Students.Include(s => s.Department).Include(x => x.Courses).ThenInclude(x => x.Course).FirstOrDefault(x => x.StudentId == id));
     }
 
     public ActionResult Create()
@@ -45,7 +65,7 @@ namespace UniversityRegistrar.Controllers
 
       _db.Students.Add(student);
       _db.SaveChanges();
-      return View();
+      return RedirectToAction("Index");
     }
 
     public ActionResult Enroll()
@@ -60,14 +80,7 @@ namespace UniversityRegistrar.Controllers
     {
       _db.StudentCourses.Add(new StudentCourse { CourseId = courseid, StudentId = studentid });
       _db.SaveChanges();
-      return RedirectToAction("Enroll");
-    }
-
-    public ActionResult DeclareMajor()
-    {
-      ViewBag.StudentId = new SelectList(_db.Students, "StudentId", "Name");
-      ViewBag.DepartmentId = new SelectList(_db.Departments, "DepartmentId", "Name");
-      return View();
+      return RedirectToAction("Index");
     }
 
     public ActionResult SelectDepartment(int id)
@@ -98,14 +111,19 @@ namespace UniversityRegistrar.Controllers
       return RedirectToAction("Details", new { id = id });
     }
 
+    public ActionResult DeclareMajor(int id)
+    {
+      ViewBag.DepartmentId = new SelectList(_db.Departments, "DepartmentId", "Name");
+      return View();
+    }
 
     [HttpPost]
-    public ActionResult DeclareMajor(int studentid, int departmentid)
+    public ActionResult DeclareMajor(int id, int departmentid)
     {
-      Student student = _db.Students.FirstOrDefault(x => x.StudentId == studentid);
+      Student student = _db.Students.FirstOrDefault(x => x.StudentId == id);
       student.DepartmentId = departmentid;
       _db.SaveChanges();
-      return RedirectToAction("DeclareMajor");
+      return RedirectToAction("Index");
     }
 
     public ActionResult SortByGrade()

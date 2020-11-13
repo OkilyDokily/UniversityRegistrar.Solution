@@ -7,6 +7,8 @@
 
 @model List<UniversityRegistrar.Models.Course>;
 
+<p>@Html.ActionLink("Create a course","Create")</p>
+
 @foreach(Course course in @Model)
 {
   <p>@Html.ActionLink(@course.CourseName,"Details",new {id = @course.CourseId})</p>

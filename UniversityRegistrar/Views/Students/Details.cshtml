@@ -6,8 +6,12 @@
 @using UniversityRegistrar.Models;
 
 <p>GPA: @ViewBag.GPA</p>
-<p>@Html.ActionLink("enroll in a course","SelectDepartment",new {id = @Model.StudentId})</p>
+<p>@Model.Name</p>
+<p>The student is majoring in: @Model.Department.Name</p>
+<p>@Html.ActionLink("Declare a major", "DeclareMajor", new {id = @Model.StudentId})</p>
+<p>@Html.ActionLink("Enroll in a course","SelectDepartment",new {id = @Model.StudentId})</p>
 @foreach (StudentCourse join in @Model.Courses)
 {
-  <p>@Html.ActionLink(@join.Course.CourseName,"Details","Courses", new {id = join.Course.CourseId})</p>
+  <p>@Html.ActionLink(@join.Course.CourseName,"Details","Courses", new {id = join.Course.CourseId}) : Grade: @join.Grade
+  </p>
 }

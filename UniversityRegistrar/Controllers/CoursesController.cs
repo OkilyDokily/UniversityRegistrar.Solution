@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System;
 
 namespace UniversityRegistrar.Controllers
 {
@@ -23,8 +24,9 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Details(int id)
     {
-      Course course = _db.Courses.Include(c => c.Students).Include(c => c.Department).ThenInclude(sc => sc.Student).FirstOrDefault(c => c.CourseId == id);
+      Course course = _db.Courses.Include(c => c.Students).ThenInclude(s => s.Student).Include(c => c.Department).FirstOrDefault(c => c.CourseId == id);
       List<StudentWithGPA> studentsincourse = course.Students.Select(sc => new StudentWithGPA { Student = sc.Student, GPA = (double)sc.Grade }).OrderBy(sic => sic.GPA).ToList();
+
       ViewBag.GPA = studentsincourse.Average(s => s.GPA);
       ViewBag.Department = course.Department;
       return View(studentsincourse);
@@ -41,7 +43,7 @@ namespace UniversityRegistrar.Controllers
     {
       _db.Courses.Add(course);
       _db.SaveChanges();
-      return RedirectToAction("Create");
+      return RedirectToAction("Index");
     }
   }
 }
